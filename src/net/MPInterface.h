@@ -51,6 +51,8 @@ public:
     static MPInterface& Get() { return *Current; }
     static MPInterfaceType GetType() { return CurrentType; }
     static void Set(MPInterfaceType type);
+    // Install a frontend-provided implementation (e.g. a deterministic link for netplay)
+    static void SetCustom(std::unique_ptr<MPInterface> custom, MPInterfaceType type);
 
     [[nodiscard]] int GetRecvTimeout() const noexcept { return RecvTimeout; }
     void SetRecvTimeout(int timeout) noexcept { RecvTimeout = timeout; }

@@ -65,4 +65,16 @@ void MPInterface::Set(MPInterfaceType type)
     CurrentType = type;
 }
 
+void MPInterface::SetCustom(std::unique_ptr<MPInterface> custom, MPInterfaceType type)
+{
+    if (!custom)
+    {
+        Set(MPInterface_Dummy);
+        return;
+    }
+
+    Current = std::move(custom);
+    CurrentType = type;
+}
+
 }

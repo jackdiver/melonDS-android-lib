@@ -229,6 +229,9 @@ protected:
     void GdbCheckC();
 };
 
+
+// Netplay debugging: called after each ARM9 JIT block (null = off)
+extern void (*JitTraceHook9)(ARM* cpu, u32 blockAddr);
 class ARMv5 : public ARM
 {
 public:

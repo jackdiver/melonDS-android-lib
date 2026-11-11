@@ -33,6 +33,7 @@ namespace melonDS
 {
 using Platform::Log;
 using Platform::LogLevel;
+void (*JitTraceHook9)(ARM* cpu, u32 blockAddr) = nullptr;
 
 #ifdef GDBSTUB_ENABLED
 void ARM::GdbCheckA()
@@ -632,7 +633,7 @@ void ARMv5::Execute()
             JitBlockEntry block = NDS.JIT.LookUpBlock(0, FastBlockLookup,
                 instrAddr - FastBlockLookupStart, instrAddr);
             if (block)
-                ARM_Dispatch(this, block);
+                { ARM_Dispatch(this, block); if (JitTraceHook9) JitTraceHook9(this, instrAddr); }
             else
                 NDS.JIT.CompileBlock(this);
 
