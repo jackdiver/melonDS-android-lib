@@ -505,6 +505,12 @@ void NDS::Reset()
 
     DivCnt = 0;
     SqrtCnt = 0;
+    memset(DivNumerator, 0, sizeof(DivNumerator));
+    memset(DivDenominator, 0, sizeof(DivDenominator));
+    memset(DivQuotient, 0, sizeof(DivQuotient));
+    memset(DivRemainder, 0, sizeof(DivRemainder));
+    memset(SqrtVal, 0, sizeof(SqrtVal));
+    SqrtRes = 0;
 
     ARM9.Reset();
     ARM7.Reset();
@@ -678,6 +684,17 @@ bool NDS::DoSavestate(Savestate* file)
 
     file->Var16(&DivCnt);
     file->Var16(&SqrtCnt);
+    if (file->IsAtLeastVersion(13, 1))
+    {
+        // The values are readable by games (some save and restore them on thread switches), so they must be
+        // part of the state; before 13.1 they kept whatever the console last computed
+        file->VarArray(DivNumerator, sizeof(DivNumerator));
+        file->VarArray(DivDenominator, sizeof(DivDenominator));
+        file->VarArray(DivQuotient, sizeof(DivQuotient));
+        file->VarArray(DivRemainder, sizeof(DivRemainder));
+        file->VarArray(SqrtVal, sizeof(SqrtVal));
+        file->Var32(&SqrtRes);
+    }
 
     file->Var32(&CPUStop);
 
