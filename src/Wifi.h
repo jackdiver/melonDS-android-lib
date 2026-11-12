@@ -28,6 +28,8 @@ class NDS;
 class Wifi
 {
 public:
+    // Netplay: whether the radio is on (MP_Begin was called and MP_End not yet)
+    [[nodiscard]] bool IsPowerOn() const { return PowerOn; }
 
     enum
     {
